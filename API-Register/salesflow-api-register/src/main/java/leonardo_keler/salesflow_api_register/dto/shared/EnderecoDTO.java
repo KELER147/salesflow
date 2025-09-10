@@ -1,4 +1,4 @@
-package leonardo_keler.salesflow_api_register.dto;
+package leonardo_keler.salesflow_api_register.dto.shared;
 
 public record EnderecoDTO(
         String streetName,

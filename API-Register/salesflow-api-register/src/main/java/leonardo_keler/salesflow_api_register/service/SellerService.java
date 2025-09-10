@@ -1,7 +1,7 @@
 package leonardo_keler.salesflow_api_register.service;
 
-import leonardo_keler.salesflow_api_register.dto.SellerCreateDTO;
-import leonardo_keler.salesflow_api_register.dto.SellerResponseDTO;
+import leonardo_keler.salesflow_api_register.dto.seller.SellerCreateDTO;
+import leonardo_keler.salesflow_api_register.dto.seller.SellerResponseDTO;
 import leonardo_keler.salesflow_api_register.entity.Seller;
 import leonardo_keler.salesflow_api_register.repository.SellerRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;

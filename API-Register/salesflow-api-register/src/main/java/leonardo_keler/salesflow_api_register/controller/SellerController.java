@@ -1,8 +1,8 @@
 package leonardo_keler.salesflow_api_register.controller;
 
 import jakarta.validation.Valid;
-import leonardo_keler.salesflow_api_register.dto.SellerCreateDTO;
-import leonardo_keler.salesflow_api_register.dto.SellerResponseDTO;
+import leonardo_keler.salesflow_api_register.dto.seller.SellerCreateDTO;
+import leonardo_keler.salesflow_api_register.dto.seller.SellerResponseDTO;
 import leonardo_keler.salesflow_api_register.service.SellerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -1,7 +1,7 @@
 package leonardo_keler.salesflow_api_register.service;
 
-import leonardo_keler.salesflow_api_register.dto.CustomerCreateDTO;
-import leonardo_keler.salesflow_api_register.dto.CustomerResponseDTO;
+import leonardo_keler.salesflow_api_register.dto.customer.CustomerCreateDTO;
+import leonardo_keler.salesflow_api_register.dto.customer.CustomerResponseDTO;
 import leonardo_keler.salesflow_api_register.entity.Customer;
 import leonardo_keler.salesflow_api_register.entity.Endereco;
 import leonardo_keler.salesflow_api_register.repository.CustomerRepository;
