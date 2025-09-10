@@ -9,5 +9,4 @@ public class SalesflowApiRegisterApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SalesflowApiRegisterApplication.class, args);
 	}
-
 }
