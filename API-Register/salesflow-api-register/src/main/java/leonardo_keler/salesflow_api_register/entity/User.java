@@ -1,6 +1,5 @@
 package leonardo_keler.salesflow_api_register.entity;
 
-import jakarta.persistence.Embedded;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -27,8 +26,4 @@ public class User {
 
     @NotNull
     private String phone;
-
-    @NotNull
-    @Embedded
-    private Endereco endereco;
 }
