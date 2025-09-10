@@ -28,6 +28,4 @@ public class Seller extends User{
 
     @NotBlank
     private String password;
-
-    public Seller(String name, String email, String cpf, String phone, String password) {}
 }

@@ -26,7 +26,4 @@ public class Customer extends User{
     @NotNull
     @Embedded
     private Endereco endereco;
-
-    public Customer(String name, String email, String cpf, String phone, Endereco endereco) {
-    }
 }

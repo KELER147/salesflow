@@ -31,13 +31,12 @@ public class CustomerService {
         );
 
         // Cria o novo Cliente
-        Customer newCustomer = new Customer(
-                dto.name(),
-                dto.email(),
-                dto.cpf(),
-                dto.phone(),
-            endereco
-        );
+        Customer newCustomer = new Customer();
+        newCustomer.setName(dto.name());
+        newCustomer.setEmail(dto.email());
+        newCustomer.setCpf(dto.cpf());
+        newCustomer.setPhone(dto.phone());
+        newCustomer.setEndereco(endereco);
 
         // Sava o novo Cliente no Banco de dados
         Customer savedCustomer = customerRepository.save(newCustomer);

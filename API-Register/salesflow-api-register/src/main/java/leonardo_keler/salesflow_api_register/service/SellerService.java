@@ -25,23 +25,22 @@ public class SellerService {
         }
 
         // Cria o novo Vendedor
-        Seller seller = new Seller(
-                dto.name(),
-                dto.email(),
-                dto.cpf(),
-                dto.phone(),
-                dto.password()
-        );
+        Seller newSeller = new Seller();
+        newSeller.setName(dto.name());
+        newSeller.setEmail(dto.email());
+        newSeller.setCpf(dto.cpf());
+        newSeller.setPassword(dto.password());
+        newSeller.setPhone(dto.phone());
 
         // Salva o Novo Vendedor
-        sellerRepository.save(seller);
+        sellerRepository.save(newSeller);
 
         // Cria um SellerResponseDTO
         return new SellerResponseDTO(
-                seller.getId(),
-                seller.getName(),
-                seller.getEmail(),
-                seller.getCpf()
+                newSeller.getId(),
+                newSeller.getName(),
+                newSeller.getEmail(),
+                newSeller.getCpf()
         );
     }
 }
