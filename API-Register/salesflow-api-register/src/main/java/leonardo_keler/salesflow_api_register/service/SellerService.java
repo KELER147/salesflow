@@ -4,14 +4,18 @@ import leonardo_keler.salesflow_api_register.dto.SellerCreateDTO;
 import leonardo_keler.salesflow_api_register.dto.SellerResponseDTO;
 import leonardo_keler.salesflow_api_register.entity.Seller;
 import leonardo_keler.salesflow_api_register.repository.SellerRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SellerService {
 
+    private final PasswordEncoder passwordEncoder;
     SellerRepository sellerRepository;
-    public SellerService(SellerRepository sellerRepository) {
+
+    public SellerService(SellerRepository sellerRepository, PasswordEncoder passwordEncoder) {
         this.sellerRepository = sellerRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -29,7 +33,7 @@ public class SellerService {
         newSeller.setName(dto.name());
         newSeller.setEmail(dto.email());
         newSeller.setCpf(dto.cpf());
-        newSeller.setPassword(dto.password());
+        newSeller.setPassword(passwordEncoder.encode(dto.password()));
         newSeller.setPhone(dto.phone());
 
         // Salva o Novo Vendedor
