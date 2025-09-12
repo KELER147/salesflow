@@ -32,7 +32,7 @@ public class SellerController {
         return ResponseEntity.ok(updatedSeller);
     }
 
-    @PatchMapping("/update/{id}/password")
+    @PatchMapping("/updatePassword/{id}")
     public ResponseEntity<Void> updatePassword(@PathVariable Long id, @RequestBody @Valid SellerPasswordUpdateDTO dto) {
         sellerService.updatePassword(id, dto);
         // Retorna 204 No Content, um status de sucesso que não precisa de corpo na resposta.
