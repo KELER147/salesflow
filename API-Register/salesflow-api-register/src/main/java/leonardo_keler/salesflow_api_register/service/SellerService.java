@@ -2,6 +2,7 @@ package leonardo_keler.salesflow_api_register.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import leonardo_keler.salesflow_api_register.dto.seller.SellerCreateDTO;
+import leonardo_keler.salesflow_api_register.dto.seller.SellerPasswordUpdateDTO;
 import leonardo_keler.salesflow_api_register.dto.seller.SellerResponseDTO;
 import leonardo_keler.salesflow_api_register.dto.seller.SellerUpdateDTO;
 import leonardo_keler.salesflow_api_register.entity.Seller;
@@ -68,4 +69,18 @@ public class SellerService {
                 updatedSeller.getCpf()
         );
     }
+
+    public void updatePassword(Long id, SellerPasswordUpdateDTO dto) {
+        Seller seller = sellerRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Vendedor não encontrado com o ID: " + id));
+
+        if (!passwordEncoder.matches(dto.oldPassword(), seller.getPassword())) {
+            throw new RuntimeException("Senha antiga incorreta.");
+        }
+
+        String newPasswordEncoded = passwordEncoder.encode(dto.newPassword());
+        seller.setPassword(newPasswordEncoded);
+        sellerRepository.save(seller);
+    }
+
 }
