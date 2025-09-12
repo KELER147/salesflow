@@ -1,7 +1,9 @@
 package leonardo_keler.salesflow_api_register.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import leonardo_keler.salesflow_api_register.dto.seller.SellerCreateDTO;
 import leonardo_keler.salesflow_api_register.dto.seller.SellerResponseDTO;
+import leonardo_keler.salesflow_api_register.dto.seller.SellerUpdateDTO;
 import leonardo_keler.salesflow_api_register.entity.Seller;
 import leonardo_keler.salesflow_api_register.repository.SellerRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -45,6 +47,25 @@ public class SellerService {
                 newSeller.getName(),
                 newSeller.getEmail(),
                 newSeller.getCpf()
+        );
+    }
+
+    public SellerResponseDTO updateSeller(Long id, SellerUpdateDTO dto) {
+        Seller sellerToUpdate = sellerRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Vendedor não encontrado com o ID: " + id));
+        if (dto.name() != null && !dto.name().isBlank()) {
+            sellerToUpdate.setName(dto.name());
+        }
+        if (dto.phone() != null && !dto.phone().isBlank()) {
+            sellerToUpdate.setPhone(dto.phone());
+        }
+
+        Seller updatedSeller = sellerRepository.save(sellerToUpdate);
+        return new SellerResponseDTO(
+                updatedSeller.getId(),
+                updatedSeller.getName(),
+                updatedSeller.getEmail(),
+                updatedSeller.getCpf()
         );
     }
 }

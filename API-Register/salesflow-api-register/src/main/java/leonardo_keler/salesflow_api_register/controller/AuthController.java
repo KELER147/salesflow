@@ -29,19 +29,10 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO data) {
-        // 1. Cria um objeto de autenticação com o email e senha recebidos
         var authenticationToken = new UsernamePasswordAuthenticationToken(data.email(), data.password());
-
-        // 2. O AuthenticationManager usa o UserDetailsService para validar o usuário e a senha
         var authentication = this.authenticationManager.authenticate(authenticationToken);
-
-        // 3. Se a autenticação for bem-sucedida, pega os detalhes do usuário
         var userDetails = (UserDetails) authentication.getPrincipal();
-
-        // 4. Usa o TokenService para gerar o token JWT
         var jwtToken = tokenService.generateToken(userDetails);
-
-        // 5. Retorna o token na resposta
         return ResponseEntity.ok(new LoginResponseDTO(jwtToken));
     }
 }
