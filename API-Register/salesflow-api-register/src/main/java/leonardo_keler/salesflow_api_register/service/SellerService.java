@@ -1,41 +1,28 @@
 package leonardo_keler.salesflow_api_register.service;
 
 import jakarta.persistence.EntityNotFoundException;
-import leonardo_keler.salesflow_api_register.dto.seller.SellerCreateDTO;
-import leonardo_keler.salesflow_api_register.dto.seller.SellerPasswordUpdateDTO;
-import leonardo_keler.salesflow_api_register.dto.seller.SellerResponseDTO;
-import leonardo_keler.salesflow_api_register.dto.seller.SellerUpdateDTO;
+import leonardo_keler.salesflow_api_register.dto.seller.*;
 import leonardo_keler.salesflow_api_register.entity.Seller;
 import leonardo_keler.salesflow_api_register.repository.SellerRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SellerService {
 
     private final PasswordEncoder passwordEncoder;
-    SellerRepository sellerRepository;
+    private final SellerRepository sellerRepository;
 
     public SellerService(SellerRepository sellerRepository, PasswordEncoder passwordEncoder) {
         this.sellerRepository = sellerRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-
     public SellerResponseDTO createSeller(SellerCreateDTO dto) {
-        // Verificação se já existe cpf e email no banco de dados
-        if (sellerRepository.findByCpf(dto.cpf()).isPresent()) {
-            throw new RuntimeException("this CPF is already registered");
-        }
-        if (sellerRepository.findByEmail(dto.email()).isPresent()) {
-            throw new RuntimeException("this Email is already registered");
-        }
+        validateUniqueCpfAndEmail(dto.cpf(), dto.email());
 
-        // Cria o novo Vendedor
         Seller newSeller = new Seller();
         newSeller.setName(dto.name());
         newSeller.setEmail(dto.email());
@@ -43,21 +30,14 @@ public class SellerService {
         newSeller.setPassword(passwordEncoder.encode(dto.password()));
         newSeller.setPhone(dto.phone());
 
-        // Salva o Novo Vendedor
         sellerRepository.save(newSeller);
 
-        // Cria um SellerResponseDTO
-        return new SellerResponseDTO(
-                newSeller.getId(),
-                newSeller.getName(),
-                newSeller.getEmail(),
-                newSeller.getCpf()
-        );
+        return toResponseDTO(newSeller);
     }
 
     public SellerResponseDTO updateSeller(Long id, SellerUpdateDTO dto) {
-        Seller sellerToUpdate = sellerRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Vendedor não encontrado com o ID: " + id));
+        Seller sellerToUpdate = findSellerById(id);
+
         if (dto.name() != null && !dto.name().isBlank()) {
             sellerToUpdate.setName(dto.name());
         }
@@ -65,52 +45,51 @@ public class SellerService {
             sellerToUpdate.setPhone(dto.phone());
         }
 
-        Seller updatedSeller = sellerRepository.save(sellerToUpdate);
-        return new SellerResponseDTO(
-                updatedSeller.getId(),
-                updatedSeller.getName(),
-                updatedSeller.getEmail(),
-                updatedSeller.getCpf()
-        );
+        return toResponseDTO(sellerRepository.save(sellerToUpdate));
     }
 
     public void updatePassword(Long id, SellerPasswordUpdateDTO dto) {
-        Seller seller = sellerRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Vendedor não encontrado com o ID: " + id));
+        Seller seller = findSellerById(id);
 
         if (!passwordEncoder.matches(dto.oldPassword(), seller.getPassword())) {
-            throw new RuntimeException("Senha antiga incorreta.");
+            throw new RuntimeException("Incorrect old password.");
         }
 
-        String newPasswordEncoded = passwordEncoder.encode(dto.newPassword());
-        seller.setPassword(newPasswordEncoded);
+        seller.setPassword(passwordEncoder.encode(dto.newPassword()));
         sellerRepository.save(seller);
     }
 
     public List<SellerResponseDTO> findAll() {
-        if (sellerRepository.findAll().isEmpty()) {
-            throw new IllegalStateException("Nenhum Seller encontrado");
+        List<Seller> sellers = sellerRepository.findAll();
+        if (sellers.isEmpty()) {
+            throw new IllegalStateException("No sellers found.");
         }
-        List<Seller> listSeller = sellerRepository.findAll();
-        List<SellerResponseDTO> listSellerResponseDTO = new ArrayList<>();
-
-        for  (Seller seller : listSeller) {
-            SellerResponseDTO sellerResponseDTO = new SellerResponseDTO(
-                    seller.getId(),
-                    seller.getName(),
-                    seller.getEmail(),
-                    seller.getCpf()
-
-            );
-            listSellerResponseDTO.add(sellerResponseDTO);
-        }
-        return listSellerResponseDTO;
+        return sellers.stream()
+                .map(this::toResponseDTO)
+                .toList();
     }
 
     public SellerResponseDTO findById(Long id) {
-        Seller seller = sellerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Seller com o ID: " + id + " não encontrado"));
+        return toResponseDTO(findSellerById(id));
+    }
 
+
+
+    private Seller findSellerById(Long id) {
+        return sellerRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Seller not found with ID: " + id));
+    }
+
+    private void validateUniqueCpfAndEmail(String cpf, String email) {
+        if (sellerRepository.findByCpf(cpf).isPresent()) {
+            throw new RuntimeException("This CPF is already registered.");
+        }
+        if (sellerRepository.findByEmail(email).isPresent()) {
+            throw new RuntimeException("This email is already registered.");
+        }
+    }
+
+    private SellerResponseDTO toResponseDTO(Seller seller) {
         return new SellerResponseDTO(
                 seller.getId(),
                 seller.getName(),
