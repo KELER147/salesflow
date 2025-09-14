@@ -9,6 +9,8 @@ import leonardo_keler.salesflow_api_register.service.SellerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "api-register/sellers")
 public class SellerController {
@@ -37,5 +39,11 @@ public class SellerController {
         sellerService.updatePassword(id, dto);
         // Retorna 204 No Content, um status de sucesso que não precisa de corpo na resposta.
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/findAll")
+    public ResponseEntity<List<SellerResponseDTO>> findAllSellers() {
+        List<SellerResponseDTO> sellerResponseDTO = sellerService.findAll();
+        return ResponseEntity.ok().body(sellerResponseDTO);
     }
 }

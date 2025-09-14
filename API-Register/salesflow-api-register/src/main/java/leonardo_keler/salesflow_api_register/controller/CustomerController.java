@@ -5,10 +5,9 @@ import leonardo_keler.salesflow_api_register.dto.customer.CustomerCreateDTO;
 import leonardo_keler.salesflow_api_register.dto.customer.CustomerResponseDTO;
 import leonardo_keler.salesflow_api_register.service.CustomerService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "api-register/customers")
@@ -26,4 +25,9 @@ public class CustomerController {
         return ResponseEntity.ok().body(customerResponseDTO);
     }
 
+    @GetMapping("/findAll")
+    public ResponseEntity<List<CustomerResponseDTO>> findAllCustomers() {
+        List<CustomerResponseDTO> list =  customerService.findAll();
+        return ResponseEntity.ok().body(list);
+    }
 }

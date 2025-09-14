@@ -41,6 +41,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/api-register/sellers/update/**").permitAll()
                         .requestMatchers(HttpMethod.PATCH, "/api-register/sellers/updatePassword/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api-register/customers/create").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api-register/sellers/findAll/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api-register/customers/findAll/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .build();

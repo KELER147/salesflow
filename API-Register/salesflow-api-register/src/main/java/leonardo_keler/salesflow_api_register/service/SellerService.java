@@ -10,6 +10,9 @@ import leonardo_keler.salesflow_api_register.repository.SellerRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class SellerService {
 
@@ -83,4 +86,23 @@ public class SellerService {
         sellerRepository.save(seller);
     }
 
+    public List<SellerResponseDTO> findAll() {
+        if (sellerRepository.findAll().isEmpty()) {
+            throw new IllegalStateException("Nenhum Seller encontrado");
+        }
+        List<Seller> listSeller = sellerRepository.findAll();
+        List<SellerResponseDTO> listSellerResponseDTO = new ArrayList<>();
+
+        for  (Seller seller : listSeller) {
+            SellerResponseDTO sellerResponseDTO = new SellerResponseDTO(
+                    seller.getId(),
+                    seller.getName(),
+                    seller.getEmail(),
+                    seller.getCpf()
+
+            );
+            listSellerResponseDTO.add(sellerResponseDTO);
+        }
+        return listSellerResponseDTO;
+    }
 }

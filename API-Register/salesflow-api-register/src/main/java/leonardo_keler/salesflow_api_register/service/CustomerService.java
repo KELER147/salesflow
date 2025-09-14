@@ -2,10 +2,16 @@ package leonardo_keler.salesflow_api_register.service;
 
 import leonardo_keler.salesflow_api_register.dto.customer.CustomerCreateDTO;
 import leonardo_keler.salesflow_api_register.dto.customer.CustomerResponseDTO;
+import leonardo_keler.salesflow_api_register.dto.seller.SellerResponseDTO;
+import leonardo_keler.salesflow_api_register.dto.shared.EnderecoDTO;
 import leonardo_keler.salesflow_api_register.entity.Customer;
 import leonardo_keler.salesflow_api_register.entity.Endereco;
+import leonardo_keler.salesflow_api_register.entity.Seller;
 import leonardo_keler.salesflow_api_register.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CustomerService {
@@ -50,5 +56,38 @@ public class CustomerService {
                 savedCustomer.getPhone(),
                 dto.enderecoDTO()
         );
+    }
+
+    public List<CustomerResponseDTO> findAll() {
+        if (customerRepository.findAll().isEmpty()) {
+            throw new IllegalStateException("Nenhum Customer encontrado");
+        }
+        List<Customer> listCustomer = customerRepository.findAll();
+        List<CustomerResponseDTO> listDTO = new ArrayList<>();
+
+
+        for  (Customer customer : listCustomer) {
+
+          EnderecoDTO enderecoDTO = new EnderecoDTO(
+                  customer.getEndereco().getStreetName(),
+                  customer.getEndereco().getNeighborhood(),
+                  customer.getEndereco().getComplement(),
+                  customer.getEndereco().getCity(),
+                  customer.getEndereco().getState(),
+                  customer.getEndereco().getNumber()
+          );
+
+            CustomerResponseDTO customerResponseDTO = new CustomerResponseDTO(
+                    customer.getId(),
+                    customer.getName(),
+                    customer.getEmail(),
+                    customer.getCpf(),
+                    customer.getPhone(),
+                    enderecoDTO
+            );
+            listDTO.add(customerResponseDTO);
+        }
+
+        return listDTO;
     }
 }
