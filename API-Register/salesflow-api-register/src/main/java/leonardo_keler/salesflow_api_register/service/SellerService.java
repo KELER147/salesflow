@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SellerService {
@@ -104,5 +105,17 @@ public class SellerService {
             listSellerResponseDTO.add(sellerResponseDTO);
         }
         return listSellerResponseDTO;
+    }
+
+    public SellerResponseDTO findById(Long id) {
+        Seller seller = sellerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Seller com o ID: " + id + " não encontrado"));
+
+        return new SellerResponseDTO(
+                seller.getId(),
+                seller.getName(),
+                seller.getEmail(),
+                seller.getCpf()
+        );
     }
 }

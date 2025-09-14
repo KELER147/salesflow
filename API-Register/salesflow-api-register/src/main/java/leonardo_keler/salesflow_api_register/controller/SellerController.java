@@ -46,4 +46,10 @@ public class SellerController {
         List<SellerResponseDTO> sellerResponseDTO = sellerService.findAll();
         return ResponseEntity.ok().body(sellerResponseDTO);
     }
+
+    @GetMapping("/findById/{id}")
+    public ResponseEntity<SellerResponseDTO> findById(@PathVariable Long id) {
+        SellerResponseDTO sellerResponseDTO = sellerService.findById(id);
+        return ResponseEntity.ok().body(sellerResponseDTO);
+    }
 }

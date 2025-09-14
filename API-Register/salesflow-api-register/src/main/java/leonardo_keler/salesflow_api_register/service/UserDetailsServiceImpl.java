@@ -21,7 +21,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // O "username" que o Spring nos dá aqui é, na verdade, o email que o usuário digitou no “login”
+        // O "username" = email
         var seller = sellerRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Vendedor não encontrado com o email: " + username));
 

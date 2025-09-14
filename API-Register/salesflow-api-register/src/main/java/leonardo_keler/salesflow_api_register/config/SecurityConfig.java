@@ -43,6 +43,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api-register/customers/create").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api-register/sellers/findAll/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api-register/customers/findAll/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api-register/sellers/findById/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api-register/customers/findById/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .build();

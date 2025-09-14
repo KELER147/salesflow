@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.LongFunction;
 
 @Service
 public class CustomerService {
@@ -87,7 +88,29 @@ public class CustomerService {
             );
             listDTO.add(customerResponseDTO);
         }
-
         return listDTO;
+    }
+
+    public CustomerResponseDTO findById(Long id) {
+        Customer customer = customerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Seller com o ID: " + id + " não encontrado"));
+
+        EnderecoDTO enderecoDTO = new EnderecoDTO(
+                customer.getEndereco().getStreetName(),
+                customer.getEndereco().getNeighborhood(),
+                customer.getEndereco().getComplement(),
+                customer.getEndereco().getCity(),
+                customer.getEndereco().getState(),
+                customer.getEndereco().getNumber()
+        );
+
+        return new CustomerResponseDTO(
+                customer.getId(),
+                customer.getName(),
+                customer.getEmail(),
+                customer.getCpf(),
+                customer.getPhone(),
+                enderecoDTO
+        );
     }
 }
