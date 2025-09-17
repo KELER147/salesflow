@@ -30,7 +30,6 @@ public class CategoryService {
         return convertToDTO(savedCategory);
     }
 
-
     @Transactional(readOnly = true)
     public List<CategoryDTO> findAll() {
         return categoryRepository.findAll().stream()
@@ -47,7 +46,6 @@ public class CategoryService {
         return convertToDTO(updatedCategory);
     }
 
-
     @Transactional
     public void delete(Long id) {
         // 1. Garante que a categoria existe
@@ -62,6 +60,14 @@ public class CategoryService {
 
         // 3. Se não estiver em uso, deleta
         categoryRepository.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<CategoryDTO> searchByName(String name) {
+        return categoryRepository.findByNameContainingIgnoreCase(name)
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
 

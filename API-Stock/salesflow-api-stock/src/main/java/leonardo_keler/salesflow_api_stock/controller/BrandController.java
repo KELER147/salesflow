@@ -37,6 +37,11 @@ public class BrandController {
         return ResponseEntity.ok(brandService.findById(id));
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<BrandDTO>> searchByName(@RequestParam String name) {
+        return ResponseEntity.ok(brandService.searchByName(name));
+    }
+
     @PutMapping("/update/{id}")
     public ResponseEntity<BrandDTO> update(@PathVariable Long id, @Valid @RequestBody BrandRequestDTO requestDTO) {
         return ResponseEntity.ok(brandService.update(id, requestDTO));

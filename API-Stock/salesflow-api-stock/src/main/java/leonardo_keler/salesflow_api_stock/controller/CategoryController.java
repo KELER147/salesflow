@@ -37,6 +37,11 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.findById(id));
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<CategoryDTO>> searchByName(@RequestParam String name) {
+        return ResponseEntity.ok(categoryService.searchByName(name));
+    }
+
     @PutMapping("/update/{id}")
     public ResponseEntity<CategoryDTO> update(@PathVariable Long id, @Valid @RequestBody CategoryRequestDTO requestDTO) {
         return ResponseEntity.ok(categoryService.update(id, requestDTO));

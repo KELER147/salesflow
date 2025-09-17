@@ -14,7 +14,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByExpirationDateBetween(LocalDate startDate, LocalDate endDate);
 
+    List<Product> findByNameContainingIgnoreCase(String name);
+
     boolean existsByBrandId(Long brandId);
 
     boolean existsByCategoryId(Long categoryId);
+
 }

@@ -45,7 +45,6 @@ public class BrandService {
         return convertToDTO(updatedBrand);
     }
 
-
     @Transactional
     public void delete(Long id) {
         // 1. Garante que a marca existe
@@ -61,6 +60,16 @@ public class BrandService {
         // 3. Se não estiver em uso, deleta
         brandRepository.deleteById(id);
     }
+
+    @Transactional(readOnly = true)
+    public List<BrandDTO> searchByName(String name) {
+        return brandRepository.findByNameContainingIgnoreCase(name)
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+
     public Brand findBrandById(Long id) {
         return brandRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Marca não encontrada com o ID: " + id));

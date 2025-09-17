@@ -51,7 +51,6 @@ public class ProductService {
         return convertToResponseDTO(savedProduct);
     }
 
-
     @Transactional(readOnly = true)
     public List<ProductResponseDTO> findAll() {
         return productRepository.findAll()
@@ -60,13 +59,11 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-
     @Transactional(readOnly = true)
     public ProductResponseDTO findById(Long id) {
         Product product = getProductById(id);
         return convertToResponseDTO(product);
     }
-
 
     @Transactional
     public ProductResponseDTO update(Long id, ProductUpdateDTO updateDTO) {
@@ -110,7 +107,13 @@ public class ProductService {
                 .toList();
     }
 
-
+    @Transactional(readOnly = true)
+    public List<ProductResponseDTO> searchByName(String name) {
+        return productRepository.findByNameContainingIgnoreCase(name)
+                .stream()
+                .map(this::convertToResponseDTO)
+                .collect(Collectors.toList());
+    }
 
 
     private Product getProductById(Long id) {

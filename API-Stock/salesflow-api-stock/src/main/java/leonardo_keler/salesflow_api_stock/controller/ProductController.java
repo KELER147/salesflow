@@ -38,6 +38,11 @@ public class ProductController {
         return ResponseEntity.ok(productService.findById(id));
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductResponseDTO>> searchByName(@RequestParam String name) {
+        return ResponseEntity.ok(productService.searchByName(name));
+    }
+
     @PutMapping("/update/{id}")
     public ResponseEntity<ProductResponseDTO> update(@PathVariable Long id, @Valid @RequestBody ProductUpdateDTO updateDTO) {
         return ResponseEntity.ok(productService.update(id, updateDTO));
@@ -49,7 +54,7 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/expiring-soon/") //expiring-soon/?days=40
+    @GetMapping("/expiring-soon") // /expiring-soon?days=40
     public ResponseEntity<List<ProductResponseDTO>> findExpiringSoon(@RequestParam(defaultValue = "30") Integer days) {
         return ResponseEntity.ok(productService.findProductsExpiringSoon(days));
     }
