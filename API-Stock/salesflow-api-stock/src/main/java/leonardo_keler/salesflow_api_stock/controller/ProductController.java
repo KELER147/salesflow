@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import leonardo_keler.salesflow_api_stock.dto.product.ProductRequestDTO;
 import leonardo_keler.salesflow_api_stock.dto.product.ProductResponseDTO;
 import leonardo_keler.salesflow_api_stock.dto.product.ProductUpdateDTO;
+import leonardo_keler.salesflow_api_stock.dto.product.StockUpdateDTO;
 import leonardo_keler.salesflow_api_stock.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -57,5 +58,14 @@ public class ProductController {
     @GetMapping("/expiring-soon") // /expiring-soon?days=40
     public ResponseEntity<List<ProductResponseDTO>> findExpiringSoon(@RequestParam(defaultValue = "30") Integer days) {
         return ResponseEntity.ok(productService.findProductsExpiringSoon(days));
+    }
+
+    @PatchMapping("/addStock/{id}")
+    public ResponseEntity<ProductResponseDTO> addStock(
+            @PathVariable Long id,
+            @Valid @RequestBody StockUpdateDTO stockUpdateDTO) {
+
+        ProductResponseDTO updatedProduct = productService.addStock(id, stockUpdateDTO.quantity());
+        return ResponseEntity.ok(updatedProduct);
     }
 }

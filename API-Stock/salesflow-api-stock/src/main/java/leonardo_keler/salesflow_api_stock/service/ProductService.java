@@ -115,6 +115,19 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public ProductResponseDTO addStock(Long productId, Integer quantityToAdd) {
+        Product product = getProductById(productId);
+
+        int currentQuantity = product.getQuantity();
+        int newQuantity = currentQuantity + quantityToAdd;
+        product.setQuantity(newQuantity);
+
+        Product updatedProduct = productRepository.save(product);
+
+        return convertToResponseDTO(updatedProduct);
+    }
+
 
     private Product getProductById(Long id) {
         return productRepository.findById(id)
